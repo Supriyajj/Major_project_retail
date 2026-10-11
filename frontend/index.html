@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Retail Pulse · Analytics & Sales Forecasting</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<aside class="rail">
+  <div class="brand"><span class="logo">%</span><b>Retail Pulse</b></div>
+  <nav>
+    <button data-tab="overview" class="on">Overview</button>
+    <button data-tab="patterns">Sales patterns</button>
+    <button data-tab="stores">Store segments</button>
+    <button data-tab="forecast">Forecast</button>
+    <button data-tab="ask">Insights & Ask AI</button>
+  </nav>
+  <div class="rail-foot"><span id="range"></span><button id="theme" aria-label="Toggle dark mode">Switch theme</button></div>
+</aside>
+<main>
+  <header class="bar">
+    <h1 id="title">Overview</h1>
+    <div class="filters">
+      <label>Store <select id="f-store"></select></label>
+      <label>Category <select id="f-cat"></select></label>
+      <label>Year <select id="f-year"><option>All</option><option>2023</option><option>2024</option></select></label>
+      <button id="reset" class="ghost">Reset</button>
+    </div>
+  </header>
+
+  <section id="t-overview" class="tab on">
+    <div class="kpis" id="kpis"></div>
+    <div class="grid g2-1">
+      <div class="card"><div class="ch"><h3>Revenue trend</h3>
+        <div class="seg" id="metric"><button class="on" data-m="4">Revenue</button><button data-m="5">Units</button><button data-m="6">Orders</button></div></div>
+        <div class="cv"><canvas id="c-trend"></canvas></div></div>
+      <div class="card"><div class="ch"><h3>Category mix</h3></div><div class="cv"><canvas id="c-cat"></canvas></div></div>
+    </div>
+    <div class="grid g1-1">
+      <div class="card"><div class="ch"><h3>Revenue by store</h3><small>Click a bar to filter</small></div><div class="cv"><canvas id="c-store"></canvas></div></div>
+      <div class="card"><div class="ch"><h3>Revenue by region</h3></div><div class="cv"><canvas id="c-region"></canvas></div></div>
+    </div>
+  </section>
+
+  <section id="t-patterns" class="tab">
+    <div class="grid g1-1">
+      <div class="card"><div class="ch"><h3>Seasonality, month by month</h3></div><div class="cv"><canvas id="c-season"></canvas></div></div>
+      <div class="card"><div class="ch"><h3>Average order value by weekday</h3></div><div class="cv"><canvas id="c-dow"></canvas></div></div>
+    </div>
+    <div class="card"><div class="ch"><h3>Store × category revenue</h3><small>Darker means higher revenue</small></div><div id="heat" class="heat"></div></div>
+    <div class="grid g1-1">
+      <div class="card"><div class="ch"><h3>Promotions, holidays and customer type</h3></div><div class="cv"><canvas id="c-promo"></canvas></div></div>
+      <div class="card"><div class="ch"><h3>Does a bigger discount sell more units?</h3></div><div class="cv"><canvas id="c-disc"></canvas></div><p class="note" id="disc-note"></p></div>
+    </div>
+  </section>
+
+  <section id="t-stores" class="tab">
+    <div class="grid g2-1">
+      <div class="card"><div class="ch"><h3>How stores group together</h3><small>K-Means on revenue, order value, rating, discount, loyalty and growth</small></div><div class="cv tall"><canvas id="c-seg"></canvas></div></div>
+      <div class="card"><div class="ch"><h3>Segments</h3></div><div id="seg-cards"></div></div>
+    </div>
+    <div class="card"><div class="ch"><h3>Store scorecard</h3><small id="sil"></small></div><div class="tw"><table id="tbl"></table></div></div>
+  </section>
+
+  <section id="t-forecast" class="tab">
+    <div class="card hero">
+      <div class="ch"><div><h3 id="fc-title">Revenue forecast</h3><small id="fc-sub"></small></div></div>
+      <div class="whatif">
+        <label>Horizon <b id="hv">6 months</b><input type="range" id="horizon" min="1" max="6" value="6"></label>
+        <label>What if sales shift by <b id="gv">0%</b><input type="range" id="growth" min="-20" max="20" value="0"></label>
+      </div>
+      <div class="cv xl"><canvas id="c-fc"></canvas></div>
+      <div class="chips" id="fc-chips"></div>
+    </div>
+    <div class="grid g1-1">
+      <div class="card"><div class="ch"><h3>Model leaderboard</h3><small>Scored on the last 4 months held back</small></div><div id="board"></div></div>
+      <div class="card"><div class="ch"><h3>Forecast by month</h3></div><div class="tw"><table id="fc-tbl"></table></div></div>
+    </div>
+  </section>
+
+  <section id="t-ask" class="tab">
+    <div class="grid g1-1">
+      <div class="card"><div class="ch"><h3>What the data says</h3></div><div id="ins"></div></div>
+      <div class="card chat"><div class="ch"><h3>Ask the data</h3></div>
+        <div id="log" aria-live="polite"></div>
+        <div class="qs" id="qs"></div>
+        <div class="ask"><input id="q" placeholder="Try: which store is growing fastest?" autocomplete="off"><button id="go">Ask</button></div>
+      </div>
+    </div>
+  </section>
+</main>
+<script src="lib/chart.umd.js"></script>
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body></html>
